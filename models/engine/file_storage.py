@@ -20,11 +20,20 @@ class FileStorage:
     __file_path = "json.file"
     __objects = {}
 
-    def all(self):
+    def all(self, cls:None):
         """
         returns the dictionary __objects
         """
-        return FileStorage.__objects
+        if cls is not None:
+            if type(cls) == str:
+                cls = eval(cls)
+            cls_dict = {}
+            for key, value in self.__objects.items():
+                if type(value) == cls:
+                    cls_dict[key] = value
+            return cls_dict
+        return self.__objects
+        """ return FileStorage.__objects"""
 
     def new(self, obj):
         """
@@ -60,3 +69,11 @@ class FileStorage:
                     dict_1 = dict_obj2[key]["__class__"]
                     obj = eval(dict_1)(**dict_obj2[key])
                     self.__objects[key] = obj
+
+    def delete(self, obj=None):
+        """ new public instance method to delete """
+        if obj is None:
+            return
+        key = "{}.{}".format(type(obj).__name__, obj.id)
+        if key in self.__objects:
+            del self.__objects[key]
