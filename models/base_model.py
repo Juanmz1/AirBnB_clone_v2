@@ -4,7 +4,9 @@ from uuid import uuid4
 from datetime import datetime
 import models
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, DateTime
+from sqlalchemy import Column
+from sqlalchemy import String
+from sqlalchemy import DateTime
 
 Base = declarative_base()
 
@@ -24,7 +26,7 @@ class BaseModel:
         **kwargs arguments for the constructor of a BaseModel
         """
         self.id = str(uuid4())
-        self.created_at, self.updated_at = datetime.utcnow()
+        self.created_at = self.updated_at = datetime.utcnow()
         if kwargs:
             for key, values in kwargs.items():
                 if key == "created_at" or key == "updated_at":
