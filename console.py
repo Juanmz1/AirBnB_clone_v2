@@ -137,8 +137,8 @@ class HBNBCommand(cmd.Cmd):
         if arg[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         elif len(arg) == 0:
-            dict_str1 = [str(obj) for obj in obj_dict1.values()]
-            print(dict_str1)
+            dict_str = [str(obj) for obj in obj_dict1.values()]
+            print(dict_str)
         else:
             if arg[0] in HBNBCommand.__classes:
                 for key, values in obj_dict1.items():
