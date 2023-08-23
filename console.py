@@ -133,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
         """
         arg = line.split()
         dict_str = []
-        obj_dict1 = storage.all()
+        obj_dict1 = storage.all(self.__classes)
         if arg[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         elif len(arg) == 0:
