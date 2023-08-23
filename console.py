@@ -62,6 +62,27 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif arg[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
+        kwargs = {}
+        args = arg[1:]
+        for param in args:
+            parts = param.split("=")
+            if len(parts) != 2:
+                continue
+            key = parts[0]
+            value = parts[1]
+            if value.startswith('"'):
+                value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+            elif '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            else:
+                try:
+                    value = int(value)
+                except ValueError:
+                    continue
+            kwargs[key] = value
         else:
             print(eval(arg[0])().id)
             storage.save()
@@ -100,7 +121,8 @@ class HBNBCommand(cmd.Cmd):
         elif "{}.{}".format(arg[0], arg[1]) not in obj_dict:
             print("** no instance found **")
         else:
-            del obj_dict["{}.{}".format(arg[0], arg[1])]
+            obj_dict = "{}.{}".format(arg[0], arg[1])
+            del obj_dict
             storage.save()
 
     def do_all(self, line):

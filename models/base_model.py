@@ -3,7 +3,7 @@
 from uuid import uuid4
 from datetime import datetime
 import models
-from sqlalchemy.ext.declarative import declarative_base()
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, DateTime
 
 Base = declarative_base()
@@ -14,8 +14,8 @@ class BaseModel:
     A class of the base model
     """
     id = Column(String(60), nullable=False, primary_key=True)
-    created_at = Column(DateTime, nullable=False, Default=datetime.utcnow())
-    updated_at = Column(DateTime, nullable=False, Default=datetime.utcnow())
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """
@@ -30,7 +30,7 @@ class BaseModel:
                 if key == "created_at" or key == "updated_at":
                     values = datetime.strptime(values, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
-                    setattr(self, key values)
+                    setattr(self, key, values)
 
     def __str__(self):
         """
