@@ -72,7 +72,7 @@ class FileStorage:
     def delete(self, obj=None):
         """ new public instance method to delete """
         if obj is not None:
-            key = obj.__class__.__name__ + '.' + obj.id)
+            key = obj.__class__.__name__ + '.' + obj.id
             if key in FileStorage.__objects.keys():
                 del FileStorage.__objects[key]
 
