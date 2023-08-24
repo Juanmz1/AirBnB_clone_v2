@@ -71,11 +71,10 @@ class FileStorage:
 
     def delete(self, obj=None):
         """ new public instance method to delete """
-        if obj is None:
-            return
-        key = "{}.{}".format(type(obj).__name__, obj.id)
-        if key in self.__objects:
-            del self.__objects[key]
+        if obj is not None:
+            key = obj.__class__.__name__ + '.' + obj.id)
+            if key in FileStorage.__objects.keys():
+                del FileStorage.__objects[key]
 
     def close(self):
         """ reload method call back """
