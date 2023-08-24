@@ -26,11 +26,11 @@ class FileStorage:
         """
         if cls is not None:
             cls_dict = {}
-            for key, value in FileStorage.__objects.items():
+            for key, value in self.__objects.items():
                 if value.__class__ == cls:
                     cls_dict[key] = value
             return cls_dict
-        return FileStorage.__objects
+        return self.__objects
         """ return FileStorage.__objects"""
 
     def new(self, obj):
