@@ -31,7 +31,6 @@ class FileStorage:
                     cls_dict[key] = value
             return cls_dict
         return self.__objects
-        """ return FileStorage.__objects"""
 
     def new(self, obj):
         """
