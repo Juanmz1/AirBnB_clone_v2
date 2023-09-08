@@ -20,18 +20,21 @@ class FileStorage:
     __file_path = "json.file"
     __objects = {}
 
-    def all(self, cls:None):
+    def all(self, cls=None):
         """
         returns the dictionary __objects
         """
         if cls is not None:
             cls_dict = {}
             for key, value in self.__objects.items():
+<<<<<<< HEAD
                 if cls == value.__class__ or cls == value.__class__.__name__:
+=======
+                if value.__class__ == cls:
+>>>>>>> 8b543f6f8b2f8c5e19c2d34466fbedbcca03f22d
                     cls_dict[key] = value
             return cls_dict
         return self.__objects
-        """ return FileStorage.__objects"""
 
     def new(self, obj):
         """
@@ -39,7 +42,7 @@ class FileStorage:
         key <obj class name>.id
         """
         key = "{}.{}".format(type(obj).__name__, obj.id)
-        FileStorage.__objects[key] = obj
+        self.__objects[key] = obj
 
     def save(self):
         """
@@ -47,9 +50,9 @@ class FileStorage:
         JSON file (path: __file_path)
         """
         dict_obj = {}
-        for key, values in FileStorage.__objects.items():
+        for key, values in self.__objects.items():
             dict_obj[key] = values.to_dict()
-        with open(FileStorage.__file_path, "w", encoding="utf-8") as Jsonfil:
+        with open(self.__file_path, "w", encoding="utf-8") as Jsonfil:
             json.dump(dict_obj, Jsonfil)
 
     def reload(self):
@@ -60,6 +63,7 @@ class FileStorage:
         no exception should be raised)
         """
         from models.base_model import BaseModel
+
         if os.path.isfile(self.__file_path):
             with open(self.__file_path, "r", encoding="utf-8") as Jsonfil:
                 dict_obj2 = json.load(Jsonfil)
@@ -70,12 +74,7 @@ class FileStorage:
 
     def delete(self, obj=None):
         """ new public instance method to delete """
-        if obj is None:
-            return
-        key = "{}.{}".format(type(obj).__name__, obj.id)
-        if key in self.__objects:
-            del self.__objects[key]
-
-    def close(self):
-        """ reload method call back """
-        self.reload()
+        if obj is not None:
+            key = obj.__class__.__name__ + '.' + obj.id
+            if key in FileStorage.__objects.keys():
+                del FileStorage.__objects[key]
