@@ -58,35 +58,32 @@ class HBNBCommand(cmd.Cmd):
         Creates a new instance of BaseModel, saves it
         (to the JSON file)
         """
-        arg = line.split()
-        if len(arg) == 0:
-            print("** class name missing **")
-        elif arg[0] not in HBNBCommand.__classes:
-            print("** class doesn't exist **")
-        kwargs = {}
-        args = arg[1:]
-        for param in args:
-            parts = param.split("=")
-            if len(parts) != 2:
-                continue
-            key = parts[0]
-            value = parts[1]
-            if value.startswith('"'):
-                value = value[1:-1].replace('_', ' ').replace('\\"', '"')
-            elif '.' in value:
-                try:
-                    value = float(value)
-                except ValueError:
-                    continue
+        try:
+            if not line:
+                raise SyntaxError()
+            arg = line.split()
+            kwargs = {}
+            for i in range(1, len(arg)):
+                key, value = tuple(arg[i].split("="))
+                if value[0] == '"':
+                    value = value.strip('"').replace("_", " ")
+                else:
+                    try:
+                        value = eval(value)
+                    except(SyntaxError, NameError):
+                        continue
+                kwargs[key] = value
+            if kwargs == {}:
+                obj = eval(arg[0])()
             else:
-                try:
-                    value = int(value)
-                except ValueError:
-                    continue
-            kwargs[key] = value
-        else:
-            print(eval(arg[0])().id)
-            storage.save()
+                obj = eval(arg[0])(**kwargs)
+                models.storage.new(obj)
+            print(obj.id)
+            obj.save()
+        except SyntaxError:
+            print("** class name missing **")
+        except NameError:
+            print("** class doesn't exist **")
 
     def do_show(self, line):
         """
@@ -133,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
         """
         arg = line.split()
         dict_str = []
-        obj_dict1 = storage.all(self.__classes)
+        obj_dict1 = storage.all(self)
         if arg[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         elif len(arg) == 0:

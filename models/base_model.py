@@ -62,7 +62,8 @@ class BaseModel:
             else:
                 dict_obj[key] = values
         dict_obj["__class__"] = type(self).__name__
-        dict_obj.pop("_sa_instance_state", None)
+        if "_sa_instance_state" in dict_obj:
+            del dict_obj["_sa_instance_state"]
         return dict_obj
 
     def delete(self):
