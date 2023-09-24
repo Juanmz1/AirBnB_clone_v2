@@ -27,14 +27,11 @@ class FileStorage:
         if cls is not None:
             cls_dict = {}
             for key, value in self.__objects.items():
-<<<<<<< HEAD
                 if cls == value.__class__ or cls == value.__class__.__name__:
-=======
-                if value.__class__ == cls:
->>>>>>> 8b543f6f8b2f8c5e19c2d34466fbedbcca03f22d
-                    cls_dict[key] = value
-            return cls_dict
-        return self.__objects
+                    if value.__class__ == cls:
+                        cls_dict[key] = value
+                        return cls_dict
+                return self.__objects
 
     def new(self, obj):
         """
@@ -78,3 +75,7 @@ class FileStorage:
             key = obj.__class__.__name__ + '.' + obj.id
             if key in FileStorage.__objects.keys():
                 del FileStorage.__objects[key]
+
+    def close(self):
+        """ deserialization of the JSON file """
+        self.reload()
